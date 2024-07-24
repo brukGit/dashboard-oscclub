@@ -1,4 +1,37 @@
+@import 'settings';
+
 .container-filter{
     width: 30%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+ 
+
+    input{
+        margin: 0 $margin-small;
+        padding: calc($margin-small/2);
+        
+    }
   
+}
+
+
+
+@include tablet {
+    .container-filter{
+        width: 100%;
+        flex-direction: column;
+        
+
+    //  div{
+    //     width: 100%;
+    //  }
+    }
+}
+
+@include mobile {
+    .container-filter{
+        width: 100%;
+        flex-direction: column;
+    }
 }

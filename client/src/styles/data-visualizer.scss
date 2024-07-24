@@ -1,0 +1,10 @@
+@import 'settings';
+
+.container-visualizer{
+    background-color: $darker-white;
+    border: 1px solid $darker-white;
+    border-radius: $border-radius;
+    padding: $padding-big;
+    max-width: 90%;
+    margin: auto;
+}

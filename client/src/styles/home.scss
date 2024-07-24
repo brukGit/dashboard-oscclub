@@ -1,7 +1,22 @@
-
-.container{
+@import 'settings';
+.container-home{
     width: 90%;
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: left;
+    flex-wrap: wrap;
+    margin: auto;
+
+
+}
+@include tablet{
+    .container-home{
+        flex-direction: column;
+    }
+}
+@include mobile {
+    .container-home{
+        flex-direction: column;
+    }
 }

@@ -1,0 +1,28 @@
+$body-bg-color: #f5f5f5;
+$darker-white: #e5e5e5;
+$border-radius: 8px;
+
+// Breakpoints
+$mobile-breakpoint: 438px;
+$tablet-breakpoint: 600px;
+
+
+
+$padding-big: 24px;
+$margin-small: 12px;
+
+// Media query mixins
+@mixin mobile {
+    @media (max-width: #{$mobile-breakpoint - 1px}) {
+      @content;
+    }
+  }
+
+@mixin tablet{
+    @media (max-width: #{$tablet-breakpoint - 1px}) {
+        @content;
+        
+    }
+}
+
+  

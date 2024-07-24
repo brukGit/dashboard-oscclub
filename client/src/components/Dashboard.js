@@ -22,9 +22,6 @@ const Dashboard = () => {
     fetchData();
   }, [selectedCountries, yearRange]);
 
-  useEffect(() => {
-    console.log('data..',data);
-  }, [data]);
 
   return (
     <DataVisualization data={data} />

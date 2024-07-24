@@ -20,7 +20,8 @@ const FilterPanel = () => {
 
   useEffect(() => {
     if (selectedCountries.length === 0) {
-      dispatch(setCountries(Object.values(countryCodeMapping)));
+      const defaultCountries = Object.values(countryCodeMapping).slice(0, 2);
+      dispatch(setCountries(defaultCountries));
     }
   }, [dispatch, selectedCountries]);
 
@@ -56,7 +57,7 @@ const FilterPanel = () => {
           <button
             key={country}
             onClick={() => handleCountryChange(country)}
-            style={{ backgroundColor: selectedCountries.includes(countryCodeMapping[country]) ? 'orange' : 'white' }}
+            style={{ backgroundColor: selectedCountries.includes(countryCodeMapping[country]) ? '#efdacf' : 'white' }}
           >
             {country}
           </button>
@@ -66,24 +67,26 @@ const FilterPanel = () => {
         <h3>Select Year Range</h3>
         <div>
           <label>
-            Start Year:
+            from 
             <input
               type="number"
-              min="2000"
+              min="2010"
               max="2020"
               value={startYear}
               onChange={handleStartYearChange}
             />
           </label>
           <label>
-            End Year:
+          to
+            
             <input
               type="number"
-              min="2000"
+              min="2010"
               max="2020"
               value={endYear}
               onChange={handleEndYearChange}
             />
+            
           </label>
         </div>
       </div>
@@ -91,26 +94,26 @@ const FilterPanel = () => {
         <h3>Select Chart Type</h3>
         <button
           onClick={() => handleChartTypeChange('pie')}
-          style={{ backgroundColor: selectedChartType === 'pie' ? 'orange' : 'white' }}
+          style={{ backgroundColor: selectedChartType === 'pie' ? '#efdacf' : 'white' }}
         >
           Pie Chart
         </button>
         <button
           onClick={() => handleChartTypeChange('line')}
-          style={{ backgroundColor: selectedChartType === 'line' ? 'orange' : 'white' }}
+          style={{ backgroundColor: selectedChartType === 'line' ? '#efdacf' : 'white' }}
         >
           Line Chart
         </button>
         <button
           onClick={() => handleChartTypeChange('bar')}
-          style={{ backgroundColor: selectedChartType === 'bar' ? 'orange' : 'white' }}
+          style={{ backgroundColor: selectedChartType === 'bar' ? '#efdacf' : 'white' }}
         >
           Bar Chart
         </button>
       </div>
       <datalist id="tickmarks">
-        {[...Array(21)].map((_, i) => (
-          <option key={i} value={2000 + i} label={2000 + i} />
+        {[...Array(11)].map((_, i) => (
+          <option key={i} value={2010 + i} label={2010 + i} />
         ))}
       </datalist>
     </div>

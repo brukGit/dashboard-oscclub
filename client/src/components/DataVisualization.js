@@ -2,20 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Plot from 'react-plotly.js';
 
+import '../styles/data-visualizer.css';
+
 const DataVisualization = ({ data }) => {
-  const { selectedChartType } = useSelector(state => state.filters);
+  const { selectedChartType, yearRange } = useSelector(state => state.filters);
   const [pieChartData, setPieChartData] = useState([]);
   const [debtLineChartData, setDebtLineChartData] = useState([]);
   const [educationLineChartData, setEducationLineChartData] = useState([]);
   const [comboChartData, setComboChartData] = useState([]);
-
+ 
   useEffect(() => {
     if (!data || data.length === 0) return;
-   
-    
+
+
 
     const debtData = data.map(country => {
-        console.log('country..',country.code);
+      console.log('country..', country.code);
       const debtInfo = country.data['DT.DOD.DLXF.CD'] || [];
       return {
         country: country.country,
@@ -25,7 +27,7 @@ const DataVisualization = ({ data }) => {
       };
     });
 
-   
+
     const educationData = data.map(country => {
       const educationInfo = country.data['SE.XPD.TOTL.GB.ZS'] || [];
       return {
@@ -97,7 +99,7 @@ const DataVisualization = ({ data }) => {
         y: educationData.map(country => country.values.reduce((acc, val) => acc + val, 0)), // Sum values across countries
         line: { color: '#ff69b4' }, // Different color for the line
         yaxis: 'y2',
-        showlegend: true
+        showlegend: false
       }
     ]);
 
@@ -109,10 +111,29 @@ const DataVisualization = ({ data }) => {
         return (
           <Plot
             data={pieChartData}
-            layout={{ 
-              title: 'External Debt Stock Long Term, relative comparison (Latest Year)', 
-              width: '100%', 
-              height: 400 
+            layout={{
+              title: {
+                text: `External Debt Stock Long Term, relative comparison <br> Years ${yearRange[0]} to ${yearRange[1]}`,
+                font: 16
+
+              },
+              subtitle: 'External Debt Stock Long Term, WBI - DT.DOD.DLXF.CD',
+              width: '100%',
+              height: 400,
+              annotations: [
+                {
+                  text: 'Source: World Bank. DSI Indicator DT.DOD.DLXF.CD',
+                  x: 0.5,
+                  xref: 'paper',
+                  y: 1.1,
+                  yref: 'paper',
+                  showarrow: false,
+                  font: {
+                    size: 12
+                  }
+                }
+              ],
+
             }}
             style={{ width: '100%', height: 400 }}
           />
@@ -121,12 +142,29 @@ const DataVisualization = ({ data }) => {
         return (
           <Plot
             data={educationLineChartData}
-            layout={{ 
-              title: 'Education Expenditure Trend Over Time', 
-              xaxis: { title: 'Year' }, 
-              yaxis: { title: 'Expenditure (% of GDP)' }, 
-              width: '100%', 
-              height: 400 
+            layout={{
+              title: {
+                text:`Education Expenditure Per Government Expenditure <br> Years ${yearRange[0]} to ${yearRange[1]}`,
+                font: 16,
+
+              },
+              xaxis: { title: 'Year' },
+              yaxis: { title: 'Expenditure (% of Government Expenditure)' },
+              width: '100%',
+              height: 400,
+              annotations: [
+                {
+                  text: 'Source: World Bank. WBI Indicator SE.XPD.TOTL.GB.ZS',
+                  x: 0.5,
+                  xref: 'paper',
+                  y: 1.1,
+                  yref: 'paper',
+                  showarrow: false,
+                  font: {
+                    size: 12
+                  }
+                }
+              ],
             }}
             style={{ width: '100%', height: 400 }}
           />
@@ -135,27 +173,68 @@ const DataVisualization = ({ data }) => {
         return (
           <Plot
             data={comboChartData}
-            layout={{ 
-              title: 'Combined Debt and Education Data',
+            layout={{
+              title: {
+                text: `External Debt Stock Long Term, Education Expenditure Per Government Expenditure <br> Years ${yearRange[0]} to ${yearRange[1]}`,
+                font: {
+                  size: 16
+                },
+                x: 0.5,
+                xanchor: 'center',
+                y: 0.95,
+                yanchor: 'top',
+                width: 400  // Limit the width of the title
+              },
+              annotations: [
+                {
+                  text: 'Source: World Bank. DSI Indicator DT.DOD.DLXF.CD, WBI Indicator SE.XPD.TOTL.GB.ZS',
+                  x: 0.5,
+                  xref: 'paper',
+                  y: 1.2,
+                  yref: 'paper',
+                  showarrow: false,
+                  font: {
+                    size: 12
+                  }
+                }
+              ],
               xaxis: { title: 'Year' },
               yaxis: {
-                title: 'Debt Stock',
+                title: 'External Debt Stock Long Term ($US current)',
                 titlefont: { color: 'blue' },
                 tickfont: { color: 'blue' }
               },
               yaxis2: {
-                title: 'Education Expenditure (% of GDP)',
+                
+                title: {
+                  text: 'Education Expenditure Per Government Expenditure (%)',
+                  // font: {
+                  //   size: 16
+                  // },
+                  x: 1,
+                  xanchor: 'center',
+                  // y: 0.95,
+                  // yanchor: 'top',
+                  width: 100  
+                },
                 titlefont: { color: 'red' },
                 tickfont: { color: 'red' },
                 overlaying: 'y',
                 side: 'right'
               },
               barmode: 'stack',
-              width: '100%', 
-              height: 400 
+              legend: {
+                orientation: 'h',
+                x: 0.5,
+                xanchor: 'center',
+                y: -0.3
+              },
+              width: '100%',
+              height: 400
             }}
             style={{ width: '100%', height: 400 }}
           />
+
         );
       default:
         return <div>Select a chart type to view.</div>;
@@ -163,7 +242,7 @@ const DataVisualization = ({ data }) => {
   };
 
   return (
-    <div>
+    <div className='container-visualizer'>
       {renderChart()}
     </div>
   );

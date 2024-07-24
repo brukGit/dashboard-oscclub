@@ -1,6 +1,20 @@
-.container {
+.container-home {
   width: 90%;
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: left;
+  flex-wrap: wrap;
+  margin: auto;
+}
+
+@media (max-width: 759px) {
+  .container-home {
+    flex-direction: column;
+  }
+}
+@media (max-width: 437px) {
+  .container-home {
+    flex-direction: column;
+  }
 }/*# sourceMappingURL=home.css.map */

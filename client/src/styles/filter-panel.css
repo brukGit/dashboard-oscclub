@@ -1,3 +1,23 @@
 .container-filter {
   width: 30%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.container-filter input {
+  margin: 0 12px;
+  padding: 6px;
+}
+
+@media (max-width: 599px) {
+  .container-filter {
+    width: 100%;
+    flex-direction: column;
+  }
+}
+@media (max-width: 437px) {
+  .container-filter {
+    width: 100%;
+    flex-direction: column;
+  }
 }/*# sourceMappingURL=filter-panel.css.map */

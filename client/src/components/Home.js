@@ -5,14 +5,14 @@ import Dashboard from './Dashboard';
 import '../styles/home.css'
 
 
-const Home = ()=>{
-    return(
-        <div className="container">
-        <FilterPanel/>
-        <Dashboard />
-    </div>
+const Home = () => {
+    return (
+        <div className="container-home">
+            <FilterPanel />
+            <Dashboard />
+        </div>
     )
-   
+
 }
 
 export default Home;
