@@ -1,0 +1,26 @@
+.container-dashboard {
+  position: relative;
+}
+.container-dashboard .loading, .container-dashboard .loading-container, .container-dashboard .error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+}
+.container-dashboard .loading, .container-dashboard .loading-container {
+  color: #C7672D;
+}
+.container-dashboard .error {
+  color: red;
+}
+.container-dashboard .loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px; /* Adjust as needed */
+}
+.container-dashboard .loading-animation {
+  width: 50px; /* Adjust size as needed */
+  height: 50px;
+}/*# sourceMappingURL=dashboard.css.map */

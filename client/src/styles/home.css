@@ -8,7 +8,7 @@
   margin: auto;
 }
 
-@media (max-width: 759px) {
+@media (max-width: 599px) {
   .container-home {
     flex-direction: column;
   }

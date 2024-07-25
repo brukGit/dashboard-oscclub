@@ -6,15 +6,21 @@ const LandingContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
-  height: 100vh;
+  justify-content:center;
+  height: 50%;
+  width: 90%;
+  margin: auto;
+  margin-top: 128px;
   background-color: #f0e6e1;
+  position: relative;
+  
 `;
 
 const WelcomeText = styled.h1`
   font-size: 2.5rem;
   color: #333;
   margin-bottom: 2rem;
+ 
 `;
 
 const EnterButton = styled.button`
@@ -26,6 +32,7 @@ const EnterButton = styled.button`
   font-size: 1.2rem;
   cursor: pointer;
   transition: background-color 0.3s;
+  border: 1px solid black;
 
   &:hover {
     background-color: #A55420;

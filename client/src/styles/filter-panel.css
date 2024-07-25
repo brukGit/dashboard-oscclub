@@ -3,21 +3,67 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  gap: 12px;
+  justify-self: center;
+  margin: auto;
 }
 .container-filter input {
   margin: 0 12px;
   padding: 6px;
+}
+.container-filter .horizontal-slider {
+  width: 100%;
+  height: 50px;
+  margin-top: 25px; /* Add space above the slider */
+}
+.container-filter .thumb {
+  font-size: 0.9em;
+  text-align: center;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  padding-top: 5px;
+  top: -14px;
+}
+.container-filter .thumb {
+  font-size: 0.9em;
+  text-align: center;
+  background-color: #020202;
+  color: #C7672D;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  padding-top: 5px;
+}
+.container-filter .track {
+  top: 0;
+  bottom: 0;
+  background: #ddd;
+  border-radius: 999px;
+  height: 4px;
+}
+.container-filter .track.track-1 {
+  background: #efdacf;
+  font-size: 10px;
 }
 
 @media (max-width: 599px) {
   .container-filter {
     width: 100%;
     flex-direction: column;
+    gap: 12px;
+    max-height: 100%;
   }
 }
 @media (max-width: 437px) {
   .container-filter {
     width: 100%;
     flex-direction: column;
+    gap: 12px;
+    max-height: 100%;
   }
 }/*# sourceMappingURL=filter-panel.css.map */

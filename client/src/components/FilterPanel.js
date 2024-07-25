@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ReactSlider from 'react-slider';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCountries, setYearRange, setChartType } from '../actions';
 
@@ -17,11 +18,14 @@ const FilterPanel = () => {
   const { selectedCountries, yearRange, selectedChartType } = useSelector(state => state.filters);
   const [startYear, setStartYear] = useState(yearRange[0]);
   const [endYear, setEndYear] = useState(yearRange[1]);
+  const initialStartYear = yearRange[0];
+  const initialEndYear = yearRange[1];
+  const [range, setRange] = React.useState([initialStartYear, initialEndYear]);
 
   useEffect(() => {
     if (selectedCountries.length === 0) {
-      const defaultCountries = Object.values(countryCodeMapping).slice(0, 2);
-      dispatch(setCountries(defaultCountries));
+      const defaultCountries = Object.values(countryCodeMapping);
+       dispatch(setCountries(defaultCountries));
     }
   }, [dispatch, selectedCountries]);
 
@@ -47,6 +51,13 @@ const FilterPanel = () => {
 
   const handleChartTypeChange = (type) => {
     dispatch(setChartType(type));
+    // dispatch(setCountries(defaultCountries));
+    // dispatch(setYearRange(defaultYearRange));
+  };
+
+  const handleChange = (newRange) => {
+    setRange(newRange);
+    dispatch(setYearRange(newRange));
   };
 
   return (
@@ -65,7 +76,7 @@ const FilterPanel = () => {
       </div>
       <div>
         <h3>Select Year Range</h3>
-        <div>
+        {/* <div>
           <label>
             from 
             <input
@@ -88,7 +99,21 @@ const FilterPanel = () => {
             />
             
           </label>
-        </div>
+        </div> */}
+        <ReactSlider
+        className="horizontal-slider"
+        thumbClassName="thumb"
+        trackClassName="track"
+        defaultValue={[initialStartYear, initialEndYear]}
+        ariaLabel={['Lower thumb', 'Upper thumb']}
+        ariaValuetext={state => `Year ${state.valueNow}`}
+        renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
+        pearling
+        minDistance={1}
+        min={2010}
+        max={2020}
+        onChange={handleChange}
+      />
       </div>
       <div>
         <h3>Select Chart Type</h3>
@@ -111,6 +136,9 @@ const FilterPanel = () => {
           Bar Chart
         </button>
       </div>
+      
+    
+      
       <datalist id="tickmarks">
         {[...Array(11)].map((_, i) => (
           <option key={i} value={2010 + i} label={2010 + i} />
