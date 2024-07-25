@@ -3,23 +3,30 @@
   border: 1px solid #e5e5e5;
   border-radius: 8px;
   padding: 24px;
+  display: flex;
+  align-items: flex-start;
   margin: auto;
 }
 .container-visualizer .container-plot {
   display: flex;
   flex-direction: column;
   justify-content: left;
+  align-items: flex-start;
   gap: 12px;
   max-width: 80%;
 }
 .container-visualizer .container-card {
   background-color: #C7672D;
   color: #e5e5e5;
-  height: 25%;
-  max-width: 25%;
+  height: 15%;
+  max-width: 75%;
   box-shadow: 0 4px 20px #C7672D;
   border-radius: 8px;
-  padding: 0;
+  padding: 0 4px;
+}
+.container-visualizer .container-card span {
+  font-size: 12px;
+  color: #020202;
 }
 .container-visualizer .container-card p {
   font-size: 32px;

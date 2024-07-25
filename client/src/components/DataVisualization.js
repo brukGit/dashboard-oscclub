@@ -242,7 +242,7 @@ const DataVisualization = ({ data }) => {
             </div>
 
             <div className='container-card'>
-              <h4>Average Education Expenditure Per Government Expenditure</h4>
+              <span>Average Education Expenditure Per Government Expenditure</span>
               <p>{averageExpenditure}%</p>
             </div>
           </div>

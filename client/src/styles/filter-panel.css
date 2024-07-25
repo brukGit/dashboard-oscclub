@@ -1,10 +1,12 @@
 .container-filter {
   width: 30%;
+  height: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   gap: 12px;
-  justify-self: center;
+  box-shadow: 0 4px 5px #C7672D;
+  padding: 4px;
   margin: auto;
 }
 .container-filter input {

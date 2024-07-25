@@ -13,7 +13,10 @@ $tablet-breakpoint: 600px;
 
 $padding-big: 24px;
 $margin-small: 12px;
+$padding-small: 4px;
 
+$box-shadow: 0 4px 20px $accent-color;
+$box-shadow-thin: 0 4px 5px $accent-color;
 // Media query mixins
 @mixin mobile {
     @media (max-width: #{$mobile-breakpoint - 1px}) {
