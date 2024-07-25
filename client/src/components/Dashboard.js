@@ -28,6 +28,10 @@ const fetchDataWithRetries = async (url, params, retries = 3, delay = 2000) => {
   }
 };
 
+const apiUrl = process.env.NODE_ENV === 'production' 
+  ? process.env.REACT_APP_API_URL_PROD 
+  : process.env.REACT_APP_API_URL_DEV;
+
 const Dashboard = () => {
   const { selectedCountries, yearRange } = useSelector(state => state.filters);
   const [data, setData] = useState([]);
@@ -47,7 +51,7 @@ const Dashboard = () => {
     setError(null);
   
     try {
-      const response = await axios.get('http://localhost:5000/api/data/fetch', {
+      const response = await axios.get(apiUrl, {
         params: {
           countries: JSON.stringify(countries),
           yearRange: years
@@ -79,6 +83,7 @@ useEffect(() => {
 }, [selectedCountries, yearRange, debouncedFetchData]);
 
 
+
   return (
     <div className='container-dashboard'>
    {loading && !error && 
@@ -89,7 +94,7 @@ useEffect(() => {
    {error && <p className='error'>{error}</p>}
 
 
-    {!error && 
+    {!error && !loading &&
      <DataVisualization data={data} />
     }
    
