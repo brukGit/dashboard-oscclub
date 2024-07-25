@@ -1,5 +1,6 @@
 .container-dashboard {
   position: relative;
+  max-width: 90%;
 }
 .container-dashboard .loading, .container-dashboard .loading-container, .container-dashboard .error {
   position: absolute;

@@ -5,6 +5,37 @@
     border: 1px solid $darker-white;
     border-radius: $border-radius;
     padding: $padding-big;
-    max-width: 90%;
+   
     margin: auto;
+
+
+    .container-plot{
+        display: flex;
+        flex-direction: column;
+        justify-content: left;
+        gap: $margin-small;
+        max-width: 80%;
+    }
+
+    .container-card{
+        background-color: $accent-color;
+        color: $darker-white;       
+        height: 25%;
+        max-width: 25%;
+        box-shadow: 0 4px 20px $accent-color;
+        border-radius: $border-radius;
+        padding: 0;
+       
+   
+
+        p{
+            font-size: 32px;
+            font-weight: bolder;;
+
+        }
+
+    }
+
+    
+    
 }

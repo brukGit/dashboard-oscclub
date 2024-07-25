@@ -13,11 +13,12 @@ const DataVisualization = ({ data }) => {
   const [educationLineChartData, setEducationLineChartData] = useState([]);
   const [comboChartData, setComboChartData] = useState([]);
   const [mapChartData, setMapChartData] = useState([]);
+  const [averageExpenditure, setAverageExpenditure] = useState(0);
 
   useEffect(() => {
     if (!data || data.length === 0) return;
 
-         const debtData = data.map(country => {
+    const debtData = data.map(country => {
       // console.log('country..', country.code);
       const debtInfo = country.data['DT.DOD.DLXF.CD'] || [];
       return {
@@ -29,7 +30,21 @@ const DataVisualization = ({ data }) => {
     });
     console.log('debt..', debtData);
 
+    const calculateAverageExpenditure = (educationData) => {
+      let totalExpenditure = 0;
+      let count = 0;
 
+      educationData.forEach(country => {
+        country.values.forEach(value => {
+          if (value !== null) {
+            totalExpenditure += value;
+            count += 1;
+          }
+        });
+      });
+
+      return count > 0 ? (totalExpenditure / count).toFixed(2) : 0;
+    };
     const educationData = data.map(country => {
       const educationInfo = country.data['SE.XPD.TOTL.GB.ZS'] || [];
       return {
@@ -39,8 +54,10 @@ const DataVisualization = ({ data }) => {
         years: educationInfo.map(d => d.date)
       };
     });
-    
-    console.log('education..', educationData);
+
+    const averageExpenditure = calculateAverageExpenditure(educationData);
+
+
 
     const pieData = debtData.map(country => ({
       label: country.code,
@@ -76,6 +93,8 @@ const DataVisualization = ({ data }) => {
       }))
     );
 
+    setAverageExpenditure(averageExpenditure);
+
     setComboChartData([
       ...debtData.map((country, index) => ({
         type: 'bar',
@@ -92,7 +111,7 @@ const DataVisualization = ({ data }) => {
         name: 'Average Education Data',
         x: educationData[0].years, // Use years from the first country
         y: educationData[0].years.map(year => {
-          const yearData = educationData.map(country => 
+          const yearData = educationData.map(country =>
             country.values[country.years.indexOf(year)]
           ).filter(val => val !== undefined);
           return yearData.length > 0 ? yearData.reduce((sum, val) => sum + val, 0) / yearData.length : null;
@@ -175,49 +194,61 @@ const DataVisualization = ({ data }) => {
         );
       case 'line':
         return (
-          <Plot
-            data={educationLineChartData}
-            layout={{
-              title: {
-                text: `Education Expenditure Per Government Expenditure(%), <br>years ${yearRange[0]} to ${yearRange[1]}`,
-                font: {
-                  size: 16
-                }
-              },
-              xaxis: { title: 'Year',
-                dtick: 1,
-                tickformat: 'd'
-               },
-              yaxis: {
-                title: {  
-                  text: 'Expenditure per Government Expenditure (%)',
-                  font: { color: 'blue' }
-                },
-                tickfont: { color: 'blue' }
-              },
-              yaxis: { title: 'Year' },
-              width: '100%',
-              height: 400,
-              annotations: [
-                {
-                  text: 'Source: World Bank. WBI Indicator SE.XPD.TOTL.GB.ZS',
-                  x: 0.5,
-                  xref: 'paper',
-                  y: 1.1,
-                  yref: 'paper',
-                  showarrow: false,
+          <div className='container-plot'>
+
+            <div>
+
+            <Plot
+              data={educationLineChartData}
+              layout={{
+                title: {
+                  text: `Education Expenditure Per Government Expenditure(%), <br>years ${yearRange[0]} to ${yearRange[1]}`,
                   font: {
-                    size: 12
+                    size: 16
                   }
-                }
-              ],
-            
-            }}
-            style={{ width: '100%', height: 400 }}
-          />
+                },
+                xaxis: {
+                  title: 'Year',
+                  dtick: 1,
+                  tickformat: 'd'
+                },
+                yaxis: {
+                  title: {
+                    text: 'Expenditure per Government Expenditure (%)',
+                    font: { color: 'blue' }
+                  },
+                  tickfont: { color: 'blue' }
+                },
+                yaxis: { title: 'Year' },
+                width: '100%',
+                height: 400,
+                annotations: [
+                  {
+                    text: 'Source: World Bank. WBI Indicator SE.XPD.TOTL.GB.ZS',
+                    x: 0.5,
+                    xref: 'paper',
+                    y: 1.1,
+                    yref: 'paper',
+                    showarrow: false,
+                    font: {
+                      size: 12
+                    }
+                  }
+                ],
+
+              }}
+              style={{ width: '80%', height: 400 }}
+            />
+            </div>
+
+            <div className='container-card'>
+              <h4>Average Education Expenditure Per Government Expenditure</h4>
+              <p>{averageExpenditure}%</p>
+            </div>
+          </div>
         );
 
-      
+
       case 'bar':
         return (
           <Plot
@@ -247,10 +278,11 @@ const DataVisualization = ({ data }) => {
                   }
                 }
               ],
-              xaxis: { title: 'Year',
+              xaxis: {
+                title: 'Year',
                 dtick: 1,
                 tickformat: 'd'
-               },
+              },
               yaxis: {
                 title: 'External Debt Stock Long Term ($US current)',
                 titlefont: { color: 'blue' },
@@ -296,7 +328,7 @@ const DataVisualization = ({ data }) => {
   return (
     <div className='container-visualizer'>
 
-{/* <Plot
+      {/* <Plot
       data={mapChartData}
       layout={{
         title: 'Countries on Map',
