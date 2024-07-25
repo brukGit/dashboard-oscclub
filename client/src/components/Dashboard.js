@@ -94,7 +94,7 @@ useEffect(() => {
    {error && <p className='error'>{error}</p>}
 
 
-    {!error && !loading &&
+    {!error && 
      <DataVisualization data={data} />
     }
    
