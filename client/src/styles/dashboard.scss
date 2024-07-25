@@ -3,15 +3,16 @@
 
 .container-dashboard{
    position: relative;
-   max-width: 90%; 
+   min-width: 60%; 
+   min-height: 400px;
+
  
 
   .loading, .error{
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-  
+    transform: translate(-50%, -50%); 
    
    }
    .loading{

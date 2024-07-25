@@ -7,6 +7,7 @@
   gap: 12px;
   box-shadow: 0 4px 5px #C7672D;
   padding: 4px;
+  border-radius: 8px;
   margin: auto;
 }
 .container-filter input {
