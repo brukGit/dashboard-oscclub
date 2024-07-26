@@ -4,6 +4,8 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import modelView from '../assets/images/model_view.jpg';
 
+import '../styles/documentation.css'
+
 const DocContainer = styled.div`
   display: flex;
   height: calc(100vh - 60px);
@@ -77,6 +79,11 @@ const DocumentationPage = () => {
             <b>Dashboard</b>
             <li>plotly.js</li>
             <li>react-plotly.js</li>
+          </ul>
+          <ul>
+            <b>Databasse</b>
+            <li>PostgreSQL</li>
+           
           </ul>
          
         </>
@@ -296,13 +303,13 @@ const fetchDataFromAPI = async (countries, yearRange) => {
       content: (
         <>
           <ul>
-            <li>Client Side: Implementing a range of easy to use country, indicator seletion and filtering tools.</li>
-            <li>Database: Using PostgreSQL allows for handling large datasets and complex queries.</li>
-            <li>Caching: Implementing caching both server-side and client-side will improve performance as data grows.</li>
-            <li>API Design: Designing the API with pagination and filtering options allows for efficient data retrieval.</li>
-            <li>Component Design: Creating reusable chart components allows for easy addition of new visualizations.</li>
-            <li>Data Processing: Performing heavy computations server-side reduces client-side load.</li>
-            <li>Virtualization: For future scalability, we should implement virtualization for long lists of countries or data points.</li>
+            <li><b>Client Side</b><br/> Implementing a range of easy to use country, indicator seletion and filtering tools.</li>
+            <li><b>Database</b><br/> Using PostgreSQL allows for handling large datasets and complex queries.</li>
+            <li><b>Caching</b><br/> Implementing caching both server-side and client-side will improve performance as data grows.</li>
+            <li><b>API Design</b><br/> Designing the API with pagination and filtering options allows for efficient data retrieval.</li>
+            <li><b>Component Design</b><br/> Creating reusable chart components allows for easy addition of new visualizations.</li>
+            <li><b>Data Processing</b><br/> Performing heavy computations server-side reduces client-side load.</li>
+            <li><b>Virtualization</b><br/> For future scalability, we should implement virtualization for long lists of countries or data points.</li>
 
 
 
