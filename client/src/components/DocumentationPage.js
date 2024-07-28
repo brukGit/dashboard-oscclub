@@ -52,8 +52,7 @@ const DocumentationPage = () => {
       title: 'Tech Stack',
       content: (
         <>
-          <h2>Tech stack</h2>
-          <ul>
+           <ul>
             <b>Client side</b>
             <li>React</li>
             <li>React Redux</li>

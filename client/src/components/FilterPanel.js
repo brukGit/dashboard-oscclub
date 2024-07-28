@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCountries, setYearRange, setChartType } from '../actions';
+import { setCountries, setYearRange, setChartType,
+  resetCountries, resetYearRange, resetChartType
+ } from '../actions';
 
 import '../styles/filter-panel.css';
+
 const countryCodeMapping = {
   'Algeria': 'DZA',
   'Argentina': 'ARG',
@@ -20,7 +23,8 @@ const FilterPanel = () => {
   const [endYear, setEndYear] = useState(yearRange[1]);
   const initialStartYear = yearRange[0];
   const initialEndYear = yearRange[1];
-  const [range, setRange] = React.useState([initialStartYear, initialEndYear]);
+  const [sliderValue, setSliderValue] = React.useState([initialStartYear, initialEndYear]);
+  const [resetKey, setResetKey] = useState(0); // State to trigger re-render
 
   useEffect(() => {
     if (selectedCountries.length === 0) {
@@ -28,6 +32,15 @@ const FilterPanel = () => {
        dispatch(setCountries(defaultCountries));
     }
   }, [dispatch, selectedCountries]);
+
+  const handleReset = () => {
+    dispatch(resetCountries());
+    dispatch(resetYearRange());
+    dispatch(resetChartType());
+
+    setSliderValue([initialStartYear, initialEndYear]);
+    setResetKey(prevKey => prevKey + 1); // Increment the key to force re-render
+  };
 
   const handleCountryChange = (country) => {
     const countryCode = countryCodeMapping[country];
@@ -56,12 +69,13 @@ const FilterPanel = () => {
   };
 
   const handleChange = (newRange) => {
-    setRange(newRange);
+    setSliderValue(newRange);
     dispatch(setYearRange(newRange));
   };
 
   return (
     <div className='container-filter'>
+      <h2>Filters</h2>
       <div>
         <h3>Select Countries</h3>
         {Object.keys(countryCodeMapping).map(country => (
@@ -76,35 +90,14 @@ const FilterPanel = () => {
       </div>
       <div>
         <h3>Select Year Range</h3>
-        {/* <div>
-          <label>
-            from 
-            <input
-              type="number"
-              min="2010"
-              max="2020"
-              value={startYear}
-              onChange={handleStartYearChange}
-            />
-          </label>
-          <label>
-          to
-            
-            <input
-              type="number"
-              min="2010"
-              max="2020"
-              value={endYear}
-              onChange={handleEndYearChange}
-            />
-            
-          </label>
-        </div> */}
+       
         <ReactSlider
+         key={resetKey} // Use resetKey to ensure re-render
         className="horizontal-slider"
         thumbClassName="thumb"
         trackClassName="track"
-        defaultValue={[initialStartYear, initialEndYear]}
+        value={sliderValue}
+        // defaultValue={[initialStartYear, initialEndYear]}
         ariaLabel={['Lower thumb', 'Upper thumb']}
         ariaValuetext={state => `Year ${state.valueNow}`}
         renderThumb={(props, state) => <div {...props}>{state.valueNow}</div>}
@@ -135,6 +128,15 @@ const FilterPanel = () => {
         >
           Bar Chart
         </button>
+      </div>
+
+      <div>
+      <button className='reset-button'
+      onClick={handleReset}
+     
+    >
+      Reset Filters
+    </button>
       </div>
       
     

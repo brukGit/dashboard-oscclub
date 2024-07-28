@@ -17,6 +17,12 @@ const filterReducer = (state = initialState, action) => {
         ...state,
         selectedChartType: action.payload
       };
+    case 'RESET_COUNTRIES':
+      return { ...state, selectedCountries: initialState.selectedCountries };
+    case 'RESET_YEAR_RANGE':
+      return { ...state, yearRange: initialState.yearRange };
+    case 'RESET_CHART_TYPE':
+      return { ...state, selectedChartType: initialState.selectedChartType };
     default:
       return state;
   }

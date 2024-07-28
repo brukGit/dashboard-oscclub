@@ -13,3 +13,15 @@ export const setCountries = (countries) => ({
   payload: chartType,
 });
   
+
+export const resetCountries = () => ({
+  type: 'RESET_COUNTRIES',
+});
+
+export const resetYearRange = () => ({
+  type: 'RESET_YEAR_RANGE',
+});
+
+export const resetChartType = () => ({
+  type: 'RESET_CHART_TYPE',
+});

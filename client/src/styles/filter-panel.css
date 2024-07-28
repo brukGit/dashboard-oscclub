@@ -1,14 +1,27 @@
 .container-filter {
   width: 30%;
-  height: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  gap: 12px;
-  box-shadow: 0 4px 5px #C7672D;
+  gap: 6px;
+  box-shadow: 0 4px 5px rgba(199, 103, 45, 0.5);
   padding: 4px;
   border-radius: 8px;
   margin: auto;
+}
+.container-filter .reset-button {
+  padding: 0.5rem;
+  border: none;
+  background-color: #020202;
+  color: #f5f5f5;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.container-filter .reset-button:hover {
+  background-color: #f5f5f5;
+  border: 1px solid #C7672D;
+  color: #020202;
+  font-weight: bold;
 }
 .container-filter input {
   margin: 0 12px;
@@ -54,10 +67,10 @@
   font-size: 10px;
 }
 
-@media (max-width: 599px) {
+@media (min-width: 438px) and (max-width: 899px) {
   .container-filter {
     width: 100%;
-    flex-direction: column;
+    flex-direction: row;
     gap: 12px;
     max-height: 100%;
   }
@@ -65,8 +78,9 @@
 @media (max-width: 437px) {
   .container-filter {
     width: 100%;
-    flex-direction: column;
+    flex-direction: row;
     gap: 12px;
     max-height: 100%;
+    border: 1px solid black;
   }
 }/*# sourceMappingURL=filter-panel.css.map */

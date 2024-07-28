@@ -4,8 +4,16 @@
   border-radius: 8px;
   padding: 24px;
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
+  justify-content: right;
+  gap: 12px;
   margin: auto;
+}
+.container-visualizer .container-map, .container-visualizer .container-plot {
+  box-shadow: 4px 4px 20px #020202;
+  border-radius: 8px;
+  overflow: hidden;
 }
 .container-visualizer .container-plot {
   display: flex;
@@ -13,7 +21,7 @@
   justify-content: left;
   align-items: flex-start;
   gap: 12px;
-  max-width: 80%;
+  max-width: 100%;
 }
 .container-visualizer .container-card {
   background-color: #C7672D;

@@ -7,16 +7,18 @@ $border-radius: 8px;
 
 // Breakpoints
 $mobile-breakpoint: 438px;
-$tablet-breakpoint: 600px;
+$tablet-breakpoint: 900px;
 
 
 
 $padding-big: 24px;
 $margin-small: 12px;
+$margin-tiny: 6px;
 $padding-small: 4px;
 
 $box-shadow: 0 4px 20px $accent-color;
-$box-shadow-thin: 0 4px 5px $accent-color;
+$box-shadow-thin: 0 4px 5px rgba($accent-color, 0.5); 
+$box-shadow-chart: 4px 4px 20px $primary-color;
 // Media query mixins
 @mixin mobile {
     @media (max-width: #{$mobile-breakpoint - 1px}) {
@@ -24,11 +26,11 @@ $box-shadow-thin: 0 4px 5px $accent-color;
     }
   }
 
-@mixin tablet{
-    @media (max-width: #{$tablet-breakpoint - 1px}) {
-        @content;
-        
-    }
+// Mixin for tablet (between mobile-breakpoint and tablet-breakpoint)
+@mixin tablet {
+  @media (min-width: #{$mobile-breakpoint}) and (max-width: #{$tablet-breakpoint - 1px}) {
+    @content;
+  }
 }
 
   

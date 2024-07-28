@@ -2,11 +2,11 @@
 
 .container-filter{
     width: 30%;
-    height: 100%;
+    // height: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    gap: $margin-small;
+    gap: $margin-tiny;
     box-shadow: $box-shadow-thin;
     padding: $padding-small;
     border-radius: $border-radius;
@@ -16,7 +16,25 @@
     margin: auto;
   
     
-
+    .reset-button {
+  
+      padding: 0.5rem;
+     
+      border: none;
+      background-color: $primary-color;
+      color: $body-bg-color;
+      cursor: pointer;   
+      border-radius: calc($border-radius/2); 
+  
+      &:hover {
+          background-color: $body-bg-color;
+          border: 1px solid $accent-color;
+          color: $primary-color;
+          font-weight: bold;
+          
+      }
+     
+  }
 
     input{
         margin: 0 $margin-small;
@@ -74,7 +92,7 @@
 @include tablet {
     .container-filter{
         width: 100%;
-        flex-direction: column;
+        flex-direction: row;
         gap: $margin-small;
         max-height: 100%;
         
@@ -88,8 +106,9 @@
 @include mobile {
     .container-filter{
         width: 100%;
-        flex-direction: column;
+        flex-direction: row;
         gap: $margin-small;
         max-height: 100%;
+        border: 1px solid black;
     }
 }

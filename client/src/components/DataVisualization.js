@@ -5,11 +5,25 @@ import Plot from 'react-plotly.js';
 
 import '../styles/data-visualizer.css';
 
+const mapLayout = {
+  title: 'Countries on Map',
+  geo: {
+    projection: { type: 'equirectangular' }
+  },
+  margin: {
+    l: 20, // Left margin
+    r: 20, // Right margin
+    t: 40, // Top margin (reduced)
+    b: 20  // Bottom margin
+  },
+  width: 500, // Reduced width
+  height: 200  // Reduced height
+};
+
 
 const DataVisualization = ({ data }) => {
   const { selectedChartType, yearRange } = useSelector(state => state.filters);
   const [pieChartData, setPieChartData] = useState([]);
-  const [debtLineChartData, setDebtLineChartData] = useState([]);
   const [educationLineChartData, setEducationLineChartData] = useState([]);
   const [comboChartData, setComboChartData] = useState([]);
   const [mapChartData, setMapChartData] = useState([]);
@@ -28,7 +42,7 @@ const DataVisualization = ({ data }) => {
         years: debtInfo.map(d => d.date)
       };
     });
-    console.log('debt..', debtData);
+    // console.log('debt..', debtData);
 
     const calculateAverageExpenditure = (educationData) => {
       let totalExpenditure = 0;
@@ -57,7 +71,59 @@ const DataVisualization = ({ data }) => {
 
     const averageExpenditure = calculateAverageExpenditure(educationData);
 
+    const countryProfileData = data.map(country => {
+      const countryInfo = country.data['country_profile'] ? country.data['country_profile'][0] : {};
 
+      const latitude = parseFloat(countryInfo.latitude);
+      const longitude = parseFloat(countryInfo.longitude);
+      const region = countryInfo.region ? countryInfo.region.value : '';
+      const capitalCity = countryInfo.capitalCity;
+
+      if (isNaN(latitude) || isNaN(longitude)) {
+        console.error("Invalid latitude or longitude:", latitude, longitude);
+        return null; // Skip invalid data
+      }
+
+      return {
+        country: countryInfo.name,
+        code: country.code,
+        latitude,
+        longitude,
+        region,
+        capitalCity,
+        latestValue: country.latestValue || 0 // Assuming latestValue exists or default to 0
+      };
+    }).filter(country => country !== null); // Filter out invalid entries
+
+    console.log('countryprofile..', countryProfileData);
+
+
+    const mapData = [
+      {
+        type: 'choropleth',
+        locations: countryProfileData.map(country => country.code),
+        z: countryProfileData.map(country => country.latitude),
+        text: countryProfileData.map(country => country.country),
+        colorscale: 'Viridis', // Change this to a different colorscale
+        colorbar: { title: 'Latitude' },
+        locationmode: 'ISO-3',
+        hovertemplate:
+        '<b>%{text}</b><br>' +
+        'Country Code: %{location}<br>' +        
+        'Capital City: %{customdata[0]}<br>' +
+        'Region: %{customdata[1]}<br>'+
+        'Latitude: %{z}<br>'      
+          ,
+        customdata: countryProfileData.map(country => [country.capitalCity, country.region]) 
+      }
+    ];
+
+
+    console.log('mapChartData:', mapData); // Log the data to verify
+    setMapChartData(mapData);
+
+
+  
 
     const pieData = debtData.map(country => ({
       label: country.code,
@@ -122,37 +188,7 @@ const DataVisualization = ({ data }) => {
       }
     ]);
 
-    const countryProfileData = data.map(country => {
-      const latitude = parseFloat(country.latitude);
-      const longitude = parseFloat(country.longitude);
 
-      const values = country.data['country_profile'] || [];
-      const latestValue = values.length > 0 ? values[values.length - 1].value : 0;
-
-      return {
-        country: country.name,
-        code: country.iso2Code,
-        latitude,
-        longitude,
-        latestValue
-      };
-    });
-
-    console.log('countryProfileData:', countryProfileData); // Log the data to verify
-
-    const chartData = [
-      {
-        type: 'choropleth',
-        locationmode: 'country names',
-        locations: countryProfileData.map(country => country.country),
-        z: countryProfileData.map(country => country.latestValue),
-        colorscale: 'Blues',
-        colorbar: { title: 'Countries on the Map' }
-      }
-    ];
-
-    console.log('mapChartData:', chartData); // Log the data to verify
-    setMapChartData(chartData);
 
   }, [data]);
 
@@ -163,7 +199,8 @@ const DataVisualization = ({ data }) => {
     switch (selectedChartType) {
       case 'pie':
         return (
-          <Plot
+          <div className='container-plot'>
+            <Plot
             data={pieChartData}
             layout={{
               title: {
@@ -173,7 +210,7 @@ const DataVisualization = ({ data }) => {
               },
               subtitle: 'External Debt Stock Long Term, WBI - DT.DOD.DLXF.CD',
               width: '100%',
-              height: 400,
+              height: 350,
               annotations: [
                 {
                   text: 'Source: World Bank. DSI Indicator DT.DOD.DLXF.CD',
@@ -189,8 +226,9 @@ const DataVisualization = ({ data }) => {
               ],
 
             }}
-            style={{ width: '100%', height: 400 }}
+            style={{ width: '100%', height: 350 }}
           />
+          </div>
         );
       case 'line':
         return (
@@ -198,47 +236,47 @@ const DataVisualization = ({ data }) => {
 
             <div>
 
-            <Plot
-              data={educationLineChartData}
-              layout={{
-                title: {
-                  text: `Education Expenditure Per Government Expenditure(%), <br>years ${yearRange[0]} to ${yearRange[1]}`,
-                  font: {
-                    size: 16
-                  }
-                },
-                xaxis: {
-                  title: 'Year',
-                  dtick: 1,
-                  tickformat: 'd'
-                },
-                yaxis: {
+              <Plot
+                data={educationLineChartData}
+                layout={{
                   title: {
-                    text: 'Expenditure per Government Expenditure (%)',
-                    font: { color: 'blue' }
-                  },
-                  tickfont: { color: 'blue' }
-                },
-                yaxis: { title: 'Year' },
-                width: '100%',
-                height: 400,
-                annotations: [
-                  {
-                    text: 'Source: World Bank. WBI Indicator SE.XPD.TOTL.GB.ZS',
-                    x: 0.5,
-                    xref: 'paper',
-                    y: 1.1,
-                    yref: 'paper',
-                    showarrow: false,
+                    text: `Education Expenditure Per Government Expenditure(%), <br>years ${yearRange[0]} to ${yearRange[1]}`,
                     font: {
-                      size: 12
+                      size: 16
                     }
-                  }
-                ],
+                  },
+                  xaxis: {
+                    title: 'Year',
+                    dtick: 1,
+                    tickformat: 'd'
+                  },
+                  yaxis: {
+                    title: {
+                      text: 'Expenditure per Government Expenditure (%)',
+                      font: { color: 'blue' }
+                    },
+                    tickfont: { color: 'blue' }
+                  },
+                  yaxis: { title: 'Year' },
+                  width: '100%',
+                  height: 350,
+                  annotations: [
+                    {
+                      text: 'Source: World Bank. WBI Indicator SE.XPD.TOTL.GB.ZS',
+                      x: 0.5,
+                      xref: 'paper',
+                      y: 1.1,
+                      yref: 'paper',
+                      showarrow: false,
+                      font: {
+                        size: 12
+                      }
+                    }
+                  ],
 
-              }}
-              style={{ width: '80%', height: 400 }}
-            />
+                }}
+                style={{ width: '100%', height: 350 }}
+              />
             </div>
 
             <div className='container-card'>
@@ -251,11 +289,12 @@ const DataVisualization = ({ data }) => {
 
       case 'bar':
         return (
-          <Plot
+          <div className='container-plot'>
+            <Plot
             data={comboChartData}
             layout={{
               title: {
-                text: `External Debt Stock Long Term, Education Expenditure Per Government Expenditure, <br>years ${yearRange[0]} to ${yearRange[1]}`,
+                text: `External Debt Stock Long Term, Education Expenditure <br>Per Government Expenditure, years ${yearRange[0]} to ${yearRange[1]}`,
                 font: {
                   size: 16
                 },
@@ -263,7 +302,7 @@ const DataVisualization = ({ data }) => {
                 xanchor: 'center',
                 y: 0.95,
                 yanchor: 'top',
-                width: 400  // Limit the width of the title
+                width: 350  // Limit the width of the title
               },
               annotations: [
                 {
@@ -284,14 +323,14 @@ const DataVisualization = ({ data }) => {
                 tickformat: 'd'
               },
               yaxis: {
-                title: 'External Debt Stock Long Term ($US current)',
+                title: 'External Debt Stock Long Term <br>($US current)',
                 titlefont: { color: 'blue' },
                 tickfont: { color: 'blue' }
               },
               yaxis2: {
 
                 title: {
-                  text: 'Education Expenditure Per Government Expenditure (%)',
+                  text: 'Education Expenditure Per Government <br>Expenditure(%)',
                   // font: {
                   //   size: 16
                   // },
@@ -316,8 +355,9 @@ const DataVisualization = ({ data }) => {
               width: '100%',
               height: 400
             }}
-            style={{ width: '100%', height: 400 }}
+            style={{ width: '100%', height: 350 }}
           />
+          </div>
 
         );
       default:
@@ -328,20 +368,21 @@ const DataVisualization = ({ data }) => {
   return (
     <div className='container-visualizer'>
 
-      {/* <Plot
-      data={mapChartData}
-      layout={{
-        title: 'Countries on Map',
-        geo: {
-          projection: { type: 'equirectangular' }
-        },
-        width: 800, // Use numeric values
-        height: 600  // Use numeric values
-      }}
-      style={{ width: '100%', height: '600px' }} 
-    /> */}
-      {renderChart()}
+{renderChart()}
 
+
+      <div className='container-map'>
+      <Plot
+        data={mapChartData}
+        layout={mapLayout}
+        style={{ width: '100%', height: '200px' }} // Adjusted height
+      />
+
+      </div>
+
+      
+
+     
     </div>
   );
 };

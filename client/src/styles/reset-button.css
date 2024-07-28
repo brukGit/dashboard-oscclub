@@ -1,0 +1,14 @@
+.reset-button {
+  padding: 0.5rem;
+  border: none;
+  background-color: #020202;
+  color: #f5f5f5;
+  cursor: pointer;
+  border-radius: 4px;
+}
+.reset-button:hover {
+  background-color: #f5f5f5;
+  border: 1px solid #C7672D;
+  color: #020202;
+  font-weight: bold;
+}/*# sourceMappingURL=reset-button.css.map */
